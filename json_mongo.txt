@@ -1,0 +1,26 @@
+/* AGREGAR PELICULA */
+{
+"title": "PINOCCIO",
+"year": 2024,
+"runtime": 15,
+"imdb": {
+"rating": 10.0,
+"votes": 10
+},
+"plot": "This movie entry was created by running through the Laravel MongoDB Qu…",
+"directors": {
+    "_id": "65d030dc2488077b1a09a024",
+    "name": "Guillermo",
+    "last_name": "Del Toro"
+}
+}
+/* ARGREGAR AUTHOR */
+{
+  "name": "Guillermo",
+  "last_name": "Del Toro",
+  "age": 42,
+  "country": {
+    "name": "Mexico",
+    "city": "Guadalajara"
+  }
+}
