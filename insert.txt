@@ -1,0 +1,17 @@
+{
+	"title":"Marvel: End Game",
+	"year": 2022,
+	"runtime": 180,
+	"imdb": {
+		"stars":4.5,
+		"viewers": 350
+	},
+	"plot": "The last movie from Marvel",
+	"directos":""
+}
+{
+	"name": "Jhon",
+	"last_name": "Russo",
+	"age": 41,
+	"country": "United States Of America"
+}
