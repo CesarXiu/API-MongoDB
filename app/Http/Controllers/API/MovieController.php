@@ -8,21 +8,31 @@ use App\Http\Controllers\Controller;
 
 use Alancting\Microsoft\JWT\AzureAd\AzureAdConfiguration;
 use Alancting\Microsoft\JWT\AzureAd\AzureAdAccessTokenJWT;
-use Alancting\Microsoft\JWT\AzureAd\AzureAdIdTokenJWT;
 
 class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    //private $string_microsoftPublicKeyURL = 'https://login.microsoftonline.com/9af622ec-f1a5-4422-bdc9-8c20039ed9eb/discovery/v2.0/keys';
-    //9af622ec-f1a5-4422-bdc9-8c20039ed9eb
-    private $config_options = [
-        'tenant' => '9af622ec-f1a5-4422-bdc9-8c20039ed9eb',
-        'tenant_id' => '9af622ec-f1a5-4422-bdc9-8c20039ed9eb',
-        'client_id' => 'ab3eaf82-413c-4808-b011-0086680b9795'
-    ];
-    private $audience = "87ce3de8-5800-4291-98bc-628c7d525bf7";
+    private $config_options;
+    private $audience;
+    public function __construct(){
+        $this->config_options = [
+            'tenant' => $this->getTenant(),
+            'tenant_id' => $this->getTenant(),
+            'client_id' => $this->getClient()
+        ];
+        $this->audience = $this->getAudience();
+    }
+    public function getTenant(){
+        return env('AZURE_TENANT');
+    }
+    public function getClient(){
+        return env('AZURE_CLIENT_ID');
+    }
+    public function getAudience(){
+        return env('AZURE_AUDIENCE');
+    }
     public function index(Request $request)
     {
         //$headers = $request->headers->all();
