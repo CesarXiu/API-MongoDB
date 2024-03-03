@@ -94,8 +94,8 @@ return [
         ],
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb://localhost:27017'),
-            'database' => 'api_mongodb',
+            'dsn' => env('DB_URI', 'mongodb+srv://proyectosmapachitos:Mapachitos6@clusterresidencias0.llljaqe.mongodb.net/?retryWrites=true&w=majority&appName=ClusterResidencias0'),
+            'database' => 'Residencias',
         ],
 
     ],
