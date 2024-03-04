@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\atlas;
 
 use App\Http\Controllers\Controller;
-use App\Models\atlas\Alumno;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-class AlumnoController extends Controller
+use App\Models\atlas\Departamento;
+class DepartamentoController extends Controller
 {
     //
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         //
-        //$alumnos = DB::collection('Alumnos')->get();
-        $alumnos = Alumno::all();
+        //$departamentos = DB::collection('Departamentos')->get();
+        $departamentos = Departamento::all();
         return response()->json([
-            'alumnos'=>$alumnos,
+            'departamentos'=>$departamentos,
             //'request' => $request
         ]); 
     }
@@ -28,48 +24,47 @@ class AlumnoController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $alumno = new Alumno();
-        $alumno->fill($data);
-        $alumno->save();
+        $departamento = new Departamento();
+        $departamento->fill($data);
+        $departamento->save();
         return response()->json([
-            'alumno'=>$alumno
+            'departamento'=>$departamento
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Alumno $alumno)
+    public function show(Departamento $departamento)
     {
         //
         return response()->json([
-            'alumno'=>$alumno
+            'departamento'=>$departamento
         ]);
         
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Alumno $alumno)
+    public function update(Request $request, Departamento $departamento)
     {
         //
         //dd($movie);
-        $alumno->fill($request->all())->save();
+        $departamento->fill($request->all())->save();
         return response()->json([
-            'alumno'=>$alumno
+            'departamento'=>$departamento
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Alumno $alumno)
+    public function destroy(Departamento $departamento)
     {
         //
-        $alumno->delete();
+        $departamento->delete();
         return response()->json([
             'message'=>'Borrado con exitacion!'
         ]);
     }
-
 }

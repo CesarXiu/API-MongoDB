@@ -11,11 +11,18 @@ class Alumno extends Model
     use HasFactory;
     protected $connection = 'mongodb';
     protected $collection = 'Alumnos';
-    /*protected $fillable = [
+    protected $fillable = [
         'nombre',
-        'edad',
-        'curso',
-        'notas',
-        'direccion',
-    ];*/
+        'apellidoPaterno',
+        'apellidoMaterno',
+        'numeroControl',
+        'correo',
+        'semestre',
+        'seguro',
+        'carrera',
+        'telefono',
+        'domicilio',
+        'departamento',
+        'estatus' 
+    ];
 }

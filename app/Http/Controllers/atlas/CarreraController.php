@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\atlas;
 
 use App\Http\Controllers\Controller;
-use App\Models\atlas\Alumno;
 use Illuminate\Http\Request;
+use App\Models\atlas\Carrera;
 use Illuminate\Support\Facades\DB;
-class AlumnoController extends Controller
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+class CarreraController extends Controller
 {
     //
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         //
-        //$alumnos = DB::collection('Alumnos')->get();
-        $alumnos = Alumno::all();
+        $carreras = DB::collection('Carreras')->get();
+        //$carreras = Carrera::all();
         return response()->json([
-            'alumnos'=>$alumnos,
+            'carreras'=>$carreras,
             //'request' => $request
         ]); 
     }
@@ -27,49 +26,52 @@ class AlumnoController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $alumno = new Alumno();
-        $alumno->fill($data);
-        $alumno->save();
+        
+        //$data = $request->all();
+        $carrera = new Carrera();
+        $data = json_decode($request->json()->all()[0]);
+        $carrera->name = (string) $data->{'name'};
+        //$carrera->fill($data);
+        $carrera->save();
+
         return response()->json([
-            'alumno'=>$alumno
+            'carrera'=>$carrera
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Alumno $alumno)
+    public function show(Carrera $carrera)
     {
         //
         return response()->json([
-            'alumno'=>$alumno
+            'carrera'=>$carrera
         ]);
         
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Alumno $alumno)
+    public function update(Request $request, Carrera $carrera)
     {
         //
         //dd($movie);
-        $alumno->fill($request->all())->save();
+        $carrera->fill($request->all())->save();
         return response()->json([
-            'alumno'=>$alumno
+            'carrera'=>$carrera
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Alumno $alumno)
+    public function destroy(Carrera $carrera)
     {
         //
-        $alumno->delete();
+        $carrera->delete();
         return response()->json([
             'message'=>'Borrado con exitacion!'
         ]);
     }
-
 }

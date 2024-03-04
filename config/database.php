@@ -92,12 +92,18 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'mongodb_local' => [
+            'driver' => 'mongodb',
+            'dsn' => env('DB_URI', 'mongodb://localhost:27017'),
+            'database' => 'api_mongodb',
+        ],
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb+srv://proyectosmapachitos:Mapachitos6@clusterresidencias0.llljaqe.mongodb.net/?retryWrites=true&w=majority&appName=ClusterResidencias0'),
+            'dsn' => env('DB_URI', 'mongodb+srv://proyectosmapachitos:mapachitos6@clusterresidencias0.llljaqe.mongodb.net/?retryWrites=true&w=majority&appName=ClusterResidencias0'),
             'database' => 'Residencias',
         ],
-
+        //mongodb://localhost:27017
+        //mongodb+srv://proyectosmapachitos:Mapachitos6@clusterresidencias0.llljaqe.mongodb.net/?retryWrites=true&w=majority&appName=ClusterResidencias0
     ],
 
     /*
