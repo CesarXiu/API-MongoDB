@@ -5,6 +5,8 @@ namespace App\Http\Controllers\atlas;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\atlas\Departamento;
+use App\Models\atlas\Carrera;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 class DepartamentoController extends Controller
 {
     //
@@ -23,9 +25,20 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        //$data = $request->all();
+        $data = json_decode($request->json()->all()[0]);
         $departamento = new Departamento();
-        $departamento->fill($data);
+        for ($i=0; $i < count($data->{'carreras'}); $i++) { 
+            try {
+                $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
+                //$carrera = new Carrera($modeloExistente);
+                $departamento->carreras()->associate($carrera);
+            } catch (\Throwable $th) {
+                throw new HttpException(400, $th);
+            }
+        }
+        //throw new HttpException(400, $data->{'carreras'}[0]);
+        $departamento->name = (string) $data->{'name'};
         $departamento->save();
         return response()->json([
             'departamento'=>$departamento

@@ -11,11 +11,12 @@ class Departamento extends Model
     use HasFactory;
     protected $connection = 'mongodb';
     protected $collection = 'Departamentos';
+    public $timestamps = false;
     protected $fillable = [
         'name',
         'carreras'
     ];
     public function carreras(){
-        return $this->hasMany(Carrera::class);
+        return $this->embedsMany(Carrera::class);
     }
 }
