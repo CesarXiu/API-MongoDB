@@ -13,9 +13,8 @@ class CarreraController extends Controller
     //
     public function index(Request $request)
     {
-        //
-        $carreras = DB::collection('Carreras')->get();
-        //$carreras = Carrera::all();
+        //$carreras = DB::collection('Carreras')->get();
+        $carreras = Carrera::all();
         return response()->json([
             'carreras'=>$carreras,
             //'request' => $request
@@ -29,7 +28,7 @@ class CarreraController extends Controller
         
         //$data = $request->all();
         $carrera = new Carrera();
-        $data = json_decode($request->json()->all()[0]);
+        $data = json_decode($request->getContent());
         $carrera->name = (string) $data->{'name'};
         //$carrera->fill($data);
         $carrera->save();
@@ -55,9 +54,9 @@ class CarreraController extends Controller
      */
     public function update(Request $request, Carrera $carrera)
     {
-        $data = json_decode($request->json()->all())[0];
-        throw new HttpException(400,$data->{'name'});
-        $carrera->name = $data->{'name'};
+        //$jsonString = json_decode($request->getContent(),true);
+        $data = request()->json();
+        $carrera->name = $data->get("name");
         $carrera->save();
         return response()->json([
             'carrera'=>$carrera
@@ -72,7 +71,7 @@ class CarreraController extends Controller
         //
         $carrera->delete();
         return response()->json([
-            'message'=>'Borrado con exitacion!'
+            'message'=>'Borrado!'
         ]);
     }
 }

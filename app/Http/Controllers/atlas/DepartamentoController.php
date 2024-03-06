@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\atlas\Departamento;
 use App\Models\atlas\Carrera;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Support\Collection;
 class DepartamentoController extends Controller
 {
     //
@@ -25,12 +26,13 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->json()->all()[0]);
+        $data = json_decode($request->getContent());
         $departamento = new Departamento();
         for ($i=0; $i < count($data->{'carreras'}); $i++) { 
             try {
                 $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
                 $departamento->carreras()->associate($carrera);
+                $carrera->departamento()->save($departamento);
             } catch (\Throwable $th) {
                 throw new HttpException(400, $th);
             }
@@ -60,8 +62,46 @@ class DepartamentoController extends Controller
     public function update(Request $request, Departamento $departamento)
     {
         //
-        //dd($movie);
-        $departamento->fill($request->all())->save();
+        $data = json_decode($request->getContent());
+        /*$carrera = Carrera::findOrFail($data->{'carreras'}[0]);
+        $xd = ['_id'=>['$oid' => $data->{'carreras'}[0]],'name'=>$carrera->name];
+        var_dump($xd);
+        throw new HttpException(400,$xd);*/
+        //OBETENEMOS LA COLECCION DE CARREAS EN EL DEPARTAMENTO EXISTENTE
+        if(count($data->{'carreras'})>0){
+            $carrerasDepto = $departamento->carreras();
+        }
+        if(isset($data->{'detach'}) && $data->{'detach'} == True){
+            for ($i=0; $i < count($data->{'carreras'}); $i++) { 
+                try {
+                    $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
+                    if(!$carrerasDepto->contains($carrera)){
+                        //$departamento->carreras()->detach($data->{'carreras'}[$i]);
+                        $departamento->removerCarrera();
+                        $carrera->departamento()->dissociate();
+                        $departamento->save();
+                    }
+                } catch (\Throwable $th) {
+                    throw new HttpException(400, $th);
+                }
+            }
+        }else{
+            for ($i=0; $i < count($data->{'carreras'}); $i++) { 
+                try {
+                    $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
+                    if($carrerasDepto->contains($carrera)){
+                        $departamento->carreras()->associate($carrera);
+                        $carrera->departamento()->save($departamento);
+                    }
+                } catch (\Throwable $th) {
+                    throw new HttpException(400, $th);
+                }
+            }
+            if(isset($data->{'name'}) && $data->{'name'} != ''){
+                $departamento->name = $data->{'name'};
+            }
+            $departamento->save();
+        }
         return response()->json([
             'departamento'=>$departamento
         ]);
@@ -75,7 +115,7 @@ class DepartamentoController extends Controller
         //
         $departamento->delete();
         return response()->json([
-            'message'=>'Borrado con exitacion!'
+            'message'=>'Borrado!'
         ]);
     }
 }

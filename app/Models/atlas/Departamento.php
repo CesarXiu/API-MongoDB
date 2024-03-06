@@ -19,4 +19,9 @@ class Departamento extends Model
     public function carreras(){
         return $this->embedsMany(Carrera::class);
     }
+    public function removerCarrera($carrera){
+        //DB::collection('users')->where('name', 'John')->pull('items', 'boots');
+        $this->pull('miArray', $carrera);
+        $this->save();
+    }
 }
