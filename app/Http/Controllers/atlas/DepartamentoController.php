@@ -25,19 +25,16 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //$data = $request->all();
         $data = json_decode($request->json()->all()[0]);
         $departamento = new Departamento();
         for ($i=0; $i < count($data->{'carreras'}); $i++) { 
             try {
                 $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
-                //$carrera = new Carrera($modeloExistente);
                 $departamento->carreras()->associate($carrera);
             } catch (\Throwable $th) {
                 throw new HttpException(400, $th);
             }
         }
-        //throw new HttpException(400, $data->{'carreras'}[0]);
         $departamento->name = (string) $data->{'name'};
         $departamento->save();
         return response()->json([
@@ -48,9 +45,10 @@ class DepartamentoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Departamento $departamento)
+    public function show(Departamento $departamento)//Request $request
     {
-        //
+        /*$data = json_decode($request->json()->all()[0]);
+        $departamento = Departamento::findOrFail($data->{'id'});*/
         return response()->json([
             'departamento'=>$departamento
         ]);

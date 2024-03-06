@@ -55,9 +55,10 @@ class CarreraController extends Controller
      */
     public function update(Request $request, Carrera $carrera)
     {
-        //
-        //dd($movie);
-        $carrera->fill($request->all())->save();
+        $data = json_decode($request->json()->all())[0];
+        throw new HttpException(400,$data->{'name'});
+        $carrera->name = $data->{'name'};
+        $carrera->save();
         return response()->json([
             'carrera'=>$carrera
         ]);
