@@ -28,6 +28,7 @@ class DepartamentoController extends Controller
     {
         $data = json_decode($request->getContent());
         $departamento = new Departamento();
+
         for ($i=0; $i < count($data->{'carreras'}); $i++) { 
             try {
                 $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
@@ -63,10 +64,6 @@ class DepartamentoController extends Controller
     {
         //
         $data = json_decode($request->getContent());
-        /*$carrera = Carrera::findOrFail($data->{'carreras'}[0]);
-        $xd = ['_id'=>['$oid' => $data->{'carreras'}[0]],'name'=>$carrera->name];
-        var_dump($xd);
-        throw new HttpException(400,$xd);*/
         //OBETENEMOS LA COLECCION DE CARREAS EN EL DEPARTAMENTO EXISTENTE
         if(count($data->{'carreras'})>0){
             $carrerasDepto = $departamento->carreras();
@@ -75,11 +72,11 @@ class DepartamentoController extends Controller
             for ($i=0; $i < count($data->{'carreras'}); $i++) { 
                 try {
                     $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
-                    if(!$carrerasDepto->contains($carrera)){
-                        //$departamento->carreras()->detach($data->{'carreras'}[$i]);
-                        $departamento->removerCarrera();
+                    if($carrerasDepto->contains($carrera)){
+                        $departamento->pullCarrera($carrera);
                         $carrera->departamento()->dissociate();
                         $departamento->save();
+                        //$carrera->save();
                     }
                 } catch (\Throwable $th) {
                     throw new HttpException(400, $th);
@@ -89,7 +86,7 @@ class DepartamentoController extends Controller
             for ($i=0; $i < count($data->{'carreras'}); $i++) { 
                 try {
                     $carrera = Carrera::findOrFail($data->{'carreras'}[$i]);
-                    if($carrerasDepto->contains($carrera)){
+                    if(!$carrerasDepto->contains($carrera)){
                         $departamento->carreras()->associate($carrera);
                         $carrera->departamento()->save($departamento);
                     }

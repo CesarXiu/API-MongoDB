@@ -5,7 +5,7 @@ namespace App\Models\atlas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use App\Models\atlas\Carrera;
-
+use Illuminate\Support\Facades\DB;
 class Departamento extends Model
 {
     use HasFactory;
@@ -19,9 +19,8 @@ class Departamento extends Model
     public function carreras(){
         return $this->embedsMany(Carrera::class);
     }
-    public function removerCarrera($carrera){
-        //DB::collection('users')->where('name', 'John')->pull('items', 'boots');
-        $this->pull('miArray', $carrera);
-        $this->save();
+    public function pullCarrera(Carrera $carrera){
+        DB::collection('Departamentos')->where('_id', $this->_id)->pull('carreras', ['name'=>$carrera->name]);
+        //$this->save();
     }
 }
