@@ -5,6 +5,7 @@ namespace App\Models\atlas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use App\Models\atlas\Departamento;
+use Illuminate\Support\Facades\DB;
 
 class Carrera extends Model
 {
@@ -17,6 +18,6 @@ class Carrera extends Model
     ];
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class);
+        return DB::collection('Departamentos')->where('carreras._id', $this->_id)->first();
     }
 }

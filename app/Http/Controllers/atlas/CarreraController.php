@@ -45,7 +45,8 @@ class CarreraController extends Controller
     {
         //
         return response()->json([
-            'carrera'=>$carrera
+            'carrera'=>$carrera,
+            'departamento'=>$carrera->departamento()
         ]);
         
     }
